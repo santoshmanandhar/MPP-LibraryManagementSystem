@@ -77,24 +77,25 @@ public class Login extends JFrame {
             String password = passwordField.getText();
 
             boolean isValidLogin = SystemController.INSTANCE.validateLogin(userName, password);
-            if (isValidLogin) {
-                try {
-                    String authorization = "";
-                    User user = new SystemController().login(userName, password);
-                    if (user != null) {
-                        authorization += user.getAuthorization();
-                        System.out.println("data " + authorization);
-                        new SecondForm(authorization).setVisible(true);
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Invalid UserName or Password !!!", "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (LoginException exc) {
+            if (isValidLogin == false) {
+                JOptionPane.showMessageDialog(null, "Invalid UserName or Password !!!", "Error",
+                            JOptionPane.ERROR_MESSAGE);  
+            }
+            try {
+                String authorization = "";
+                User user = new SystemController().login(userName, password);
+                if (user == null) {
                     JOptionPane.showMessageDialog(null, "Invalid UserName or Password !!!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    System.out.println("The exception is: " + exc);
+                            JOptionPane.ERROR_MESSAGE);                        
                 }
+                authorization += user.getAuthorization();
+                System.out.println("data " + authorization);
+                new SecondForm(authorization).setVisible(true);
+                dispose();
+            } catch (LoginException exc) {
+                JOptionPane.showMessageDialog(null, "Invalid UserName or Password !!!", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                System.out.println("The exception is: " + exc);
             }
         });
 
